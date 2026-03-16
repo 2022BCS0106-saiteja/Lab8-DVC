@@ -23,21 +23,18 @@ jobs:
         pip install -r requirements.txt
         pip install dvc[s3] pandas scikit-learn awscli
 
-    - name: Configure AWS credentials
-      run: |
-        mkdir -p ~/.aws
-        echo "[default]" > ~/.aws/credentials
-        echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
-        echo "aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
-        
-        echo "[default]" > ~/.aws/config
-        echo "region = us-east-1" >> ~/.aws/config
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
 
     - name: Verify AWS access
       run: aws s3 ls
 
     - name: Pull dataset from DVC
-      run: dvc pull -r myremote
+      run: dvc pull
 
     - name: Train model
       run: python src/train.py
