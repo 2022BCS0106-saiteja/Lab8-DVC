@@ -5,7 +5,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import root_mean_squared_error, r2_score
 
 # Load dataset
-df = pd.read_csv(r"data\housing.csv")
+df = pd.read_csv("data/housing.csv")
 
 # Handle missing values
 df = df.dropna()
